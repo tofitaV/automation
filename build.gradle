@@ -5,6 +5,15 @@ plugins {
 group = 'com.automation'
 version = '1.0.0'
 
+def javaVersion = (project.findProperty('javaVersion') ?: '25').toString().toInteger()
+def playwrightVersion = project.findProperty('playwrightVersion')
+def testngVersion = project.findProperty('testngVersion')
+def assertjVersion = project.findProperty('assertjVersion')
+def datafakerVersion = project.findProperty('datafakerVersion')
+def jacksonDatabindVersion = project.findProperty('jacksonDatabindVersion')
+def jacksonJsr310Version = project.findProperty('jacksonJsr310Version')
+def lombokVersion = project.findProperty('lombokVersion')
+
 def runtimeConfigKeys = [
         'browser',
         'headless',
@@ -18,7 +27,7 @@ def runtimeConfigKeys = [
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(javaVersion)
     }
 }
 
@@ -27,16 +36,16 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'com.microsoft.playwright:playwright:1.52.0'
-    testImplementation 'org.testng:testng:7.11.0'
-    testImplementation 'org.assertj:assertj-core:3.27.3'
-    testImplementation 'net.datafaker:datafaker:2.4.2'
+    testImplementation "com.microsoft.playwright:playwright:${playwrightVersion}"
+    testImplementation "org.testng:testng:${testngVersion}"
+    testImplementation "org.assertj:assertj-core:${assertjVersion}"
+    testImplementation "net.datafaker:datafaker:${datafakerVersion}"
 
-    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
-    testImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.2'
+    testImplementation "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
+    testImplementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonJsr310Version}"
 
-    testCompileOnly 'org.projectlombok:lombok:1.18.38'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.38'
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 }
 
 tasks.withType(Test).configureEach {
