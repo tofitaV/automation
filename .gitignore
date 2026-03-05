@@ -1,0 +1,32 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+
+# Project-local tooling/state
+.ai/
+.gradle/
+.gradle-local/
+.build/
+
+# Build outputs
+build/
+out/
+target/
+
+# Logs
+*.log
+
+# Java/Gradle
+*.class
+hs_err_pid*
+replay_pid*
+
+# Secrets and local env
+.env
+.env.*
+

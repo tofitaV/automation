@@ -1,0 +1,74 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.automation'
+version = '1.0.0'
+
+def runtimeConfigKeys = [
+        'browser',
+        'headless',
+        'baseUrl',
+        'ignoreHttpsErrors',
+        'defaultTimeoutMs',
+        'viewportWidth',
+        'viewportHeight',
+        'slowMoMillis'
+]
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'com.microsoft.playwright:playwright:1.52.0'
+    testImplementation 'org.testng:testng:7.11.0'
+    testImplementation 'org.assertj:assertj-core:3.27.3'
+    testImplementation 'net.datafaker:datafaker:2.4.2'
+
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+    testImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.2'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.38'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.38'
+}
+
+tasks.withType(Test).configureEach {
+    useTestNG()
+
+    testLogging {
+        events 'passed', 'failed', 'skipped'
+        exceptionFormat = 'short'
+        showStandardStreams = false
+    }
+
+    runtimeConfigKeys.each { key ->
+        def value = System.getProperty(key)
+        if (value != null) {
+            systemProperty key, value
+        }
+    }
+}
+
+test {
+    useTestNG {
+        suites file('src/test/resources/testng.xml')
+    }
+}
+
+tasks.register('smokeTest', Test) {
+    group = 'verification'
+    description = 'Runs smoke tests using TestNG smoke suite'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+
+    useTestNG {
+        suites file('src/test/resources/testng-smoke.xml')
+    }
+}
