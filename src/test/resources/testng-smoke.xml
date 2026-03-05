@@ -9,6 +9,7 @@
         </groups>
         <classes>
             <class name="com.automation.tests.reservation.Booker001UserCanBookRandomRoomTest"/>
+            <class name="com.automation.tests.reservation.Booker002UserCanOpenFirstRoomTest"/>
         </classes>
     </test>
 </suite>

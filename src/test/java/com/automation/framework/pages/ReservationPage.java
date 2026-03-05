@@ -70,6 +70,18 @@ public class ReservationPage extends BasePage {
         return this;
     }
 
+    public ReservationPage verifyRoomOpened() {
+        page.locator(RESERVE_NOW_BUTTON).first().waitFor(new Locator.WaitForOptions()
+                .setState(WaitForSelectorState.VISIBLE)
+                .setTimeout(10_000));
+
+        String roomId = readRoomIdFromCurrentUrl();
+        assertThat(roomId)
+                .as("Expected opened room URL to contain reservation room id but was: %s", page.url())
+                .isNotBlank();
+        return this;
+    }
+
     private Long readSelectedNightsCount() {
         Locator nightsSummary = page.locator(NIGHTS_SUMMARY_SELECTOR).first();
         nightsSummary.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
