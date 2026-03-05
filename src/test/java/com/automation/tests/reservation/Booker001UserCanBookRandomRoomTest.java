@@ -16,18 +16,23 @@ public class Booker001UserCanBookRandomRoomTest extends BaseTest {
     @Test(testName = "Booker001 User can book random room", groups = {"smoke", "regression"})
     public void booker001UserCanBookRandomRoom() {
         BookingPage bookingPage = new BookingPage(page())
+                .step("Step 1: Open home page")
                 .openHome();
 
         int roomIndex = bookingPage.getRandomAvailableRoomIndex();
 
         bookingPage
+                .step("Step 2: Click book this room")
                 .clickBookThisRoom(roomIndex)
+                .step("Step 3: Select first available date range")
                 .selectFirstAvailableDateRangeOnReservationCalendar(stayNights)
                 .verifySelectedNightsCount(stayNights)
+                .step("Step 4: Enter guest details and click Book Now")
                 .clickReserveNowButton()
                 .enterGuestDetails(firstName, lastName, email, phone)
                 .verifyEnteredGuestDetails(firstName, lastName, email, phone)
                 .clickBookNow()
+                .step("Step 5: Verify booking successful message")
                 .verifyBookingSuccessfulMessage();
     }
 

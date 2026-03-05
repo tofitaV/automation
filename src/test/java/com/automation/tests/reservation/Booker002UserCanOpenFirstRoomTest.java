@@ -9,7 +9,9 @@ public class Booker002UserCanOpenFirstRoomTest extends BaseTest {
     @Test(testName = "Booker002 User can open first room", groups = {"smoke", "regression"})
     public void booker002UserCanOpenFirstRoom() {
         new BookingPage(page())
+                .step("Step 1: Open home page")
                 .openHome()
+                .step("Step 2: Open first available room")
                 .clickBookFirstAvailableRoom()
                 .verifyRoomOpened();
     }

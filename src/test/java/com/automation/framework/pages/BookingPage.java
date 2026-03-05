@@ -1,5 +1,6 @@
 package com.automation.framework.pages;
 
+import com.automation.framework.base.IStep;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.PlaywrightException;
 import com.microsoft.playwright.options.WaitForSelectorState;
@@ -11,14 +12,16 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class BookingPage extends BasePage {
+public class BookingPage extends BasePage<BookingPage> {
     private static final String BOOK_ROOM_SELECTOR = "#rooms .card-footer a";
-    private static final String CHECK_AVAILABILITY_BUTTON = "#booking .btn-primary";
-    private static final String CHECK_IN_DATE_PICKER_SELECTOR = "//label[@for='checkin']/following-sibling::div//input";
-    private static final String CHECK_OUT_DATE_PICKER_SELECTOR = "//label[@for='checkout']/following-sibling::div//input";
 
     public BookingPage(com.microsoft.playwright.Page page) {
         super(page);
+    }
+
+    @Step("{step}")
+    public BookingPage step(String step) {
+        return this;
     }
 
     @Step("Open booking home page")

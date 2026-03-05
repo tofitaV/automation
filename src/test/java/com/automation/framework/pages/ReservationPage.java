@@ -1,5 +1,6 @@
 package com.automation.framework.pages;
 
+import com.automation.framework.base.IStep;
 import com.automation.framework.dtos.UnavailableDateRangeDto;
 import com.automation.framework.utils.DragAndDropUtils;
 import com.automation.framework.utils.JsonUtils;
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 
@@ -22,7 +24,7 @@ import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ReservationPage extends BasePage {
+public class ReservationPage extends BasePage<ReservationPage> {
     private static final Pattern NIGHTS_COUNT_PATTERN = Pattern.compile("x\\s*(\\d+)\\s*nights", Pattern.CASE_INSENSITIVE);
     private static final Pattern ROOM_ID_PATTERN = Pattern.compile("/reservation/(\\d+)");
     private static final TypeReference<List<UnavailableDateRangeDto>> UNAVAILABLE_DATE_RANGES_TYPE = new TypeReference<>() {
@@ -35,8 +37,6 @@ public class ReservationPage extends BasePage {
     private static final String CALENDAR_NEXT_BUTTON_SELECTOR = ".rbc-toolbar button:has-text('Next')";
     private static final String NIGHTS_SUMMARY_SELECTOR = "text=/x\\s*\\d+\\s*nights/i";
     private static final String BOOK_NOW_SELECTOR = "form .btn-primary";
-    private static final String SUCCESS_MESSAGE_SELECTOR = "//a[contains(@class, 'btn-primary')]/preceding-sibling::h2";
-    private static final String RESERVE_NOW_BUTTON = "#doReservation";
     private static final String FIRST_NAME_INPUT = "input.room-firstname";
     private static final String LAST_NAME_INPUT = "input.room-lastname";
     private static final String EMAIL_INPUT = "input.room-email";
@@ -44,6 +44,11 @@ public class ReservationPage extends BasePage {
 
     public ReservationPage(Page page) {
         super(page);
+    }
+
+    @Step("{step}")
+    public ReservationPage step(String step) {
+        return this;
     }
 
     @Step("Select first available date range for {nightsCount} nights")
@@ -75,10 +80,6 @@ public class ReservationPage extends BasePage {
 
     @Step("Verify room page is opened")
     public ReservationPage verifyRoomOpened() {
-        page.locator(RESERVE_NOW_BUTTON).first().waitFor(new Locator.WaitForOptions()
-                .setState(WaitForSelectorState.VISIBLE)
-                .setTimeout(10_000));
-
         String roomId = readRoomIdFromCurrentUrl();
         assertThat(roomId)
                 .as("Expected opened room URL to contain reservation room id but was: %s", page.url())
@@ -202,7 +203,7 @@ public class ReservationPage extends BasePage {
 
     @Step("Click Reserve Now")
     public ReservationPage clickReserveNowButton() {
-        page.locator(RESERVE_NOW_BUTTON).click();
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Reserve Now")).click();
         return this;
     }
 
@@ -232,10 +233,7 @@ public class ReservationPage extends BasePage {
 
     @Step("Verify booking successful message is shown")
     public ReservationPage verifyBookingSuccessfulMessage() {
-        Locator successMessage = page.locator(SUCCESS_MESSAGE_SELECTOR);
-        successMessage.waitFor(new Locator.WaitForOptions()
-                .setState(WaitForSelectorState.VISIBLE)
-                .setTimeout(10_000));
+        Locator successMessage = page.getByText("Booking Confirmed");
 
         String confirmationMessage = successMessage.innerText().trim();
         assertThat(confirmationMessage)

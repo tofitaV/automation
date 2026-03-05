@@ -1,9 +1,11 @@
 package com.automation.framework.pages;
 
+import com.automation.framework.base.IStep;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 
-public abstract class BasePage {
+public abstract class BasePage<T extends BasePage<T>> implements IStep<T> {
+
     protected final Page page;
 
     protected BasePage(Page page) {
@@ -19,4 +21,5 @@ public abstract class BasePage {
     public String title() {
         return page.title();
     }
+
 }
