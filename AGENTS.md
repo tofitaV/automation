@@ -22,15 +22,17 @@ Repository guidelines for AI agents and contributors building and maintaining th
 - Strictly follow Playwright best practices only; avoid non-Playwright/Selenium-style patterns.
 
 ## Folder Structure Standards
-- `src/main/java/com/automation/framework/base` for core test lifecycle classes.
-- `src/main/java/com/automation/framework/config` for configuration loading and environment resolution.
-- `src/main/java/com/automation/framework/factory` for browser/runtime object creation.
-- `src/main/java/com/automation/framework/pages` for POM classes only.
-- `src/main/java/com/automation/framework/utils` for reusable, framework-level helpers.
+- `src/test/java/com/automation/framework/base` for core test lifecycle classes.
+- `src/test/java/com/automation/framework/config` for configuration loading and environment resolution.
+- `src/test/java/com/automation/framework/factory` for browser/runtime object creation.
+- `src/test/java/com/automation/framework/pages` for POM classes only.
+- `src/test/java/com/automation/framework/dtos` for API/JSON DTOs used by the framework.
+- `src/test/java/com/automation/framework/utils` for reusable, framework-level helpers.
 - `src/test/java/com/automation/tests/<feature>` for TestNG tests.
 - `src/test/resources/config/env.properties` for runtime environment configuration.
 - `src/test/resources/testdata` for external test data files.
-- `testng.xml` for execution suite and parallel strategy.
+- `src/test/resources/testng.xml` for default execution suite and parallel strategy.
+- `src/test/resources/testng-smoke.xml` for smoke suite execution.
 
 ## Coding Standards
 - Follow standard Java naming and formatting conventions.
@@ -47,8 +49,14 @@ Repository guidelines for AI agents and contributors building and maintaining th
 - Use Booker test method naming for primary `@Test` methods: `booker<testCaseNumber><TestCaseName>` (camelCase, no spaces/underscores).
 - Every `@Test` must declare `testName` in this format: `Booker<testCaseNumber> <Test case name>`.
 - Do not use underscores (`_`) in test method names.
+- Use TestNG groups (`smoke`, `regression`) for suite-level filtering.
 - Each test must be independently runnable.
 - Prefer semantic page methods over low-level locator actions in tests.
+
+## Execution
+- Default suite: `./gradlew test`
+- Smoke suite: `./gradlew smokeTest`
+- Runtime config overrides should be passed as system properties, for example: `./gradlew smokeTest -Dheadless=true -Dbrowser=chromium`
 
 ## Restrictions and Best Practices
 - No assertions in test classes; implement reusable assertions in page classes.
