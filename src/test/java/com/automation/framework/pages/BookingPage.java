@@ -69,17 +69,4 @@ public class BookingPage extends BasePage {
         }
     }
 
-    @Step("Set availability dates: check-in {checkInDate}, check-out {checkOutDate}")
-    public BookingPage checkAvailability(LocalDate checkInDate, LocalDate checkOutDate) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        page.locator(CHECK_IN_DATE_PICKER_SELECTOR).fill(checkInDate.format(dateTimeFormatter));
-        page.locator(CHECK_OUT_DATE_PICKER_SELECTOR).fill(checkOutDate.format(dateTimeFormatter));
-        return this;
-    }
-
-    @Step("Click Check Availability")
-    public BookingPage clickCheckAvailabilityButton() {
-        page.locator(CHECK_AVAILABILITY_BUTTON).click();
-        return this;
-    }
 }

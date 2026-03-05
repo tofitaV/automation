@@ -4,7 +4,7 @@
 Repository guidelines for AI agents and contributors building and maintaining the Java + Playwright + TestNG automation framework.
 
 ## Tech Stack (fixed)
-- Language: Java (JDK 17)
+- Language: Java (JDK 25)
 - UI automation: Playwright
 - Test framework: TestNG
 - Assertions: AssertJ
