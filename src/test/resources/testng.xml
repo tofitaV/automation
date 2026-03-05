@@ -1,5 +1,8 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 <suite name="UI Automation Suite" parallel="classes" thread-count="2">
+    <listeners>
+        <listener class-name="com.automation.framework.base.AllureListener"/>
+    </listeners>
 
     <test name="UI Tests">
         <classes>

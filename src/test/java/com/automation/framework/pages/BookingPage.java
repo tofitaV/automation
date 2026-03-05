@@ -3,6 +3,7 @@ package com.automation.framework.pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.PlaywrightException;
 import com.microsoft.playwright.options.WaitForSelectorState;
+import io.qameta.allure.Step;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,16 +21,19 @@ public class BookingPage extends BasePage {
         super(page);
     }
 
+    @Step("Open booking home page")
     public BookingPage openHome() {
         open("/");
         return this;
     }
 
+    @Step("Read available room count")
     public int availableRoomCount() {
         waitForRoomCards();
         return page.locator(BOOK_ROOM_SELECTOR).count();
     }
 
+    @Step("Get random available room index")
     public int getRandomAvailableRoomIndex() {
         int availableRoomCount = availableRoomCount();
         assertThat(availableRoomCount)
@@ -38,12 +42,14 @@ public class BookingPage extends BasePage {
         return ThreadLocalRandom.current().nextInt(availableRoomCount);
     }
 
+    @Step("Open room by index: {roomIndex}")
     public ReservationPage clickBookThisRoom(int roomIndex) {
         Locator roomCard = page.locator(BOOK_ROOM_SELECTOR).nth(roomIndex);
         roomCard.click();
         return new ReservationPage(page);
     }
 
+    @Step("Open first available room")
     public ReservationPage clickBookFirstAvailableRoom() {
         int availableRoomCount = availableRoomCount();
         assertThat(availableRoomCount)
@@ -63,6 +69,7 @@ public class BookingPage extends BasePage {
         }
     }
 
+    @Step("Set availability dates: check-in {checkInDate}, check-out {checkOutDate}")
     public BookingPage checkAvailability(LocalDate checkInDate, LocalDate checkOutDate) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         page.locator(CHECK_IN_DATE_PICKER_SELECTOR).fill(checkInDate.format(dateTimeFormatter));
@@ -70,6 +77,7 @@ public class BookingPage extends BasePage {
         return this;
     }
 
+    @Step("Click Check Availability")
     public BookingPage clickCheckAvailabilityButton() {
         page.locator(CHECK_AVAILABILITY_BUTTON).click();
         return this;

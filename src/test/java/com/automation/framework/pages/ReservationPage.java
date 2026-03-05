@@ -8,6 +8,7 @@ import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
+import io.qameta.allure.Step;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -45,6 +46,7 @@ public class ReservationPage extends BasePage {
         super(page);
     }
 
+    @Step("Select first available date range for {nightsCount} nights")
     public ReservationPage selectFirstAvailableDateRangeOnReservationCalendar(int nightsCount) {
         assertThat(nightsCount)
                 .as("Nights count must be greater than 0")
@@ -62,6 +64,7 @@ public class ReservationPage extends BasePage {
         return this;
     }
 
+    @Step("Verify selected nights count is {expectedNightsCount}")
     public ReservationPage verifySelectedNightsCount(int expectedNightsCount) {
         Long selectedNightsCount = readSelectedNightsCount();
         assertThat(selectedNightsCount)
@@ -70,6 +73,7 @@ public class ReservationPage extends BasePage {
         return this;
     }
 
+    @Step("Verify room page is opened")
     public ReservationPage verifyRoomOpened() {
         page.locator(RESERVE_NOW_BUTTON).first().waitFor(new Locator.WaitForOptions()
                 .setState(WaitForSelectorState.VISIBLE)
@@ -196,11 +200,13 @@ public class ReservationPage extends BasePage {
         return firstDayOfMonth.minusDays(daysToPreviousSunday);
     }
 
+    @Step("Click Reserve Now")
     public ReservationPage clickReserveNowButton() {
         page.locator(RESERVE_NOW_BUTTON).click();
         return this;
     }
 
+    @Step("Enter guest details for {firstName} {lastName}")
     public ReservationPage enterGuestDetails(String firstName, String lastName, String email, String phone) {
         page.locator(FIRST_NAME_INPUT).fill(firstName);
         page.locator(LAST_NAME_INPUT).fill(lastName);
@@ -209,6 +215,7 @@ public class ReservationPage extends BasePage {
         return this;
     }
 
+    @Step("Verify entered guest details")
     public ReservationPage verifyEnteredGuestDetails(String firstName, String lastName, String email, String phone) {
         assertThat(page.locator(FIRST_NAME_INPUT).inputValue()).isEqualTo(firstName);
         assertThat(page.locator(LAST_NAME_INPUT).inputValue()).isEqualTo(lastName);
@@ -217,11 +224,13 @@ public class ReservationPage extends BasePage {
         return this;
     }
 
+    @Step("Click Book Now")
     public ReservationPage clickBookNow() {
         page.locator(BOOK_NOW_SELECTOR).first().click();
         return this;
     }
 
+    @Step("Verify booking successful message is shown")
     public ReservationPage verifyBookingSuccessfulMessage() {
         Locator successMessage = page.locator(SUCCESS_MESSAGE_SELECTOR);
         successMessage.waitFor(new Locator.WaitForOptions()

@@ -13,6 +13,8 @@ def datafakerVersion = project.findProperty('datafakerVersion')
 def jacksonDatabindVersion = project.findProperty('jacksonDatabindVersion')
 def jacksonJsr310Version = project.findProperty('jacksonJsr310Version')
 def lombokVersion = project.findProperty('lombokVersion')
+def allureTestNgVersion = project.findProperty('allureTestNgVersion')
+def aspectjVersion = project.findProperty('aspectjVersion')
 
 def runtimeConfigKeys = [
         'browser',
@@ -35,11 +37,20 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    aspectjAgent {
+        canBeConsumed = false
+        canBeResolved = true
+    }
+}
+
 dependencies {
     testImplementation "com.microsoft.playwright:playwright:${playwrightVersion}"
     testImplementation "org.testng:testng:${testngVersion}"
     testImplementation "org.assertj:assertj-core:${assertjVersion}"
     testImplementation "net.datafaker:datafaker:${datafakerVersion}"
+    testImplementation "io.qameta.allure:allure-testng:${allureTestNgVersion}"
+    aspectjAgent "org.aspectj:aspectjweaver:${aspectjVersion}"
 
     testImplementation "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
     testImplementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonJsr310Version}"
@@ -48,8 +59,14 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 }
 
+def allureResultsDir = layout.buildDirectory.dir('allure-results').get().asFile
+def allureReportDir = layout.buildDirectory.dir('reports/allure-report').get().asFile
+def allureCli = file('/opt/homebrew/bin/allure').exists() ? '/opt/homebrew/bin/allure' : 'allure'
+
 tasks.withType(Test).configureEach {
     useTestNG()
+    jvmArgs "-javaagent:${configurations.aspectjAgent.singleFile}"
+    systemProperty 'allure.results.directory', allureResultsDir.absolutePath
 
     testLogging {
         events 'passed', 'failed', 'skipped'
@@ -80,4 +97,22 @@ tasks.register('smokeTest', Test) {
     useTestNG {
         suites file('src/test/resources/testng-smoke.xml')
     }
+}
+
+tasks.register('cleanSmokeAllureArtifacts', Delete) {
+    delete allureResultsDir, allureReportDir
+}
+
+tasks.register('generateSmokeAllureReport', Exec) {
+    group = 'verification'
+    description = 'Generates Allure HTML report for smoke tests'
+    commandLine allureCli, 'generate', allureResultsDir.absolutePath, '-o', allureReportDir.absolutePath, '--clean'
+    onlyIf { allureResultsDir.exists() }
+}
+
+tasks.named('smokeTest', Test) {
+    dependsOn tasks.named('cleanSmokeAllureArtifacts')
+    outputs.upToDateWhen { false }
+    outputs.cacheIf { false }
+    finalizedBy tasks.named('generateSmokeAllureReport')
 }

@@ -65,6 +65,10 @@ public abstract class BaseTest {
         return CONTEXT_THREAD.get();
     }
 
+    static Page currentPage() {
+        return PAGE_THREAD.get();
+    }
+
     private void closeIfPresent(AutoCloseable autoCloseable) {
         if (autoCloseable == null) {
             return;
