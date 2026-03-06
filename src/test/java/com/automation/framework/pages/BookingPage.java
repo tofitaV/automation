@@ -1,6 +1,5 @@
 package com.automation.framework.pages;
 
-import com.automation.framework.base.IStep;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.PlaywrightException;
 import com.microsoft.playwright.options.WaitForSelectorState;
@@ -8,8 +7,6 @@ import io.qameta.allure.Step;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class BookingPage extends BasePage<BookingPage> {
