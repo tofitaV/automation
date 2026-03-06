@@ -62,14 +62,11 @@ public class BookingPage extends BasePage<BookingPage> {
     }
 
     private void waitForRoomCards() {
-        try {
-            page.locator(BOOK_ROOM_SELECTOR).scrollIntoViewIfNeeded();
-            Locator firstRoomCard = page.locator(BOOK_ROOM_SELECTOR).first();
-            firstRoomCard.waitFor(new Locator.WaitForOptions()
-                    .setState(WaitForSelectorState.VISIBLE)
-                    .setTimeout(10_000));
-        } catch (PlaywrightException ignore) {
-        }
+        page.locator(BOOK_ROOM_SELECTOR).scrollIntoViewIfNeeded();
+        Locator firstRoomCard = page.locator(BOOK_ROOM_SELECTOR).first();
+        firstRoomCard.waitFor(new Locator.WaitForOptions()
+                .setState(WaitForSelectorState.VISIBLE)
+                .setTimeout(10_000));
     }
 
 }
