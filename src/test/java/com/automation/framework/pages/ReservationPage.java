@@ -1,6 +1,5 @@
 package com.automation.framework.pages;
 
-import com.automation.framework.base.IStep;
 import com.automation.framework.dtos.UnavailableDateRangeDto;
 import com.automation.framework.utils.DragAndDropUtils;
 import com.automation.framework.utils.JsonUtils;

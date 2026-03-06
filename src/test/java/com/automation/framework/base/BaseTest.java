@@ -6,16 +6,16 @@ import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 
-public abstract class BaseTest {
+public class BaseTest {
     private static final ThreadLocal<Playwright> PLAYWRIGHT_THREAD = new ThreadLocal<>();
     private static final ThreadLocal<Browser> BROWSER_THREAD = new ThreadLocal<>();
     private static final ThreadLocal<BrowserContext> CONTEXT_THREAD = new ThreadLocal<>();
     private static final ThreadLocal<Page> PAGE_THREAD = new ThreadLocal<>();
 
-    @BeforeMethod(alwaysRun = true)
+    @BeforeClass(alwaysRun = true)
     public void setUp() {
         Playwright playwright = Playwright.create();
         PLAYWRIGHT_THREAD.set(playwright);
@@ -44,7 +44,7 @@ public abstract class BaseTest {
         PAGE_THREAD.set(page);
     }
 
-    @AfterMethod(alwaysRun = true)
+    @AfterClass(alwaysRun = true)
     public void tearDown() {
         closeIfPresent(PAGE_THREAD.get());
         closeIfPresent(CONTEXT_THREAD.get());

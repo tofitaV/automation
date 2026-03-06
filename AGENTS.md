@@ -3,13 +3,14 @@
 ## Purpose
 Repository guidelines for AI agents and contributors building and maintaining the Java + Playwright + TestNG automation framework.
 
-## Tech Stack (fixed)
+## Tech Stack
 - Language: Java (JDK 25)
 - UI automation: Playwright
 - Test framework: TestNG
 - Assertions: AssertJ
 - Build: Gradle
 - Design pattern: Page Object Model (POM)
+- Reporting: Allure Report
 
 ## Project Rules and Conventions
 - Follow `one test case = one test class` strictly.
@@ -17,9 +18,9 @@ Repository guidelines for AI agents and contributors building and maintaining th
 - Keep assertions in web page classes to maximize reuse across tests.
 - Keep Page Objects focused on UI interaction, state exposure, and reusable UI assertions.
 - Avoid static mutable shared state across tests.
-- Prefer composition over inheritance except for shared test lifecycle (`BaseTest`) and shared page primitives (`BasePage`).
 - Never hardcode environment URLs or credentials in Java classes.
 - Strictly follow Playwright best practices only; avoid non-Playwright/Selenium-style patterns.
+- Use MCP Playwright where needed to improve test case writing quality and flow validation.
 
 ## Folder Structure Standards
 - `src/test/java/com/automation/framework/base` for core test lifecycle classes.
@@ -39,7 +40,7 @@ Repository guidelines for AI agents and contributors building and maintaining th
 - Keep methods small and intention-revealing.
 - Use `private final` fields where possible.
 - Use explicit waits/conditions where needed; avoid arbitrary sleeps.
-- Keep selector definitions private inside page classes.
+- Keep selector definitions private inside page classes. Use role-based locators where possible.
 - Do not mix API/business logic into Page Objects.
 
 ## Test Design Principles
