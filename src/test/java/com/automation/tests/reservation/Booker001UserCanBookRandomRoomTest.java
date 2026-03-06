@@ -13,7 +13,7 @@ public class Booker001UserCanBookRandomRoomTest extends BaseTest {
     private final String email = faker.internet().emailAddress();
     private final String phone = faker.numerify("380#########");
 
-    @Test(testName = "Booker001 User can book random room", groups = {"smoke", "regression"})
+    @Test(testName = "Booker001 User can book random room", groups = {"smoke"})
     public void booker001UserCanBookRandomRoom() {
         BookingPage bookingPage = new BookingPage(page())
                 .step("Step 1: Open home page")

@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 
 public class Booker002UserCanOpenFirstRoomTest extends BaseTest {
 
-    @Test(testName = "Booker002 User can open first room", groups = {"smoke", "regression"})
+    @Test(testName = "Booker002 User can open first room", groups = {"smoke"})
     public void booker002UserCanOpenFirstRoom() {
         new BookingPage(page())
                 .step("Step 1: Open home page")
