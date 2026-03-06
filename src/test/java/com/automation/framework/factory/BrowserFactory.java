@@ -5,8 +5,6 @@ import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Playwright;
 
 public final class BrowserFactory {
-    private BrowserFactory() {
-    }
 
     public static Browser createBrowser(Playwright playwright, String browserName, boolean headless, int slowMoMillis) {
         BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions()

@@ -13,9 +13,6 @@ public final class ConfigManager {
         loadProperties(ENV_CONFIG_PATH);
     }
 
-    private ConfigManager() {
-    }
-
     public static String get(String key) {
         String systemValue = System.getProperty(key);
         if (systemValue != null && !systemValue.isBlank()) {
