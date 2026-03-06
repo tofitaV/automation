@@ -111,7 +111,7 @@ tasks.register('generateSmokeAllureReport', Exec) {
 }
 
 tasks.named('smokeTest', Test) {
-    dependsOn tasks.named('cleanSmokeAllureArtifacts')
+    //dependsOn tasks.named('cleanSmokeAllureArtifacts')
     outputs.upToDateWhen { false }
     outputs.cacheIf { false }
     finalizedBy tasks.named('generateSmokeAllureReport')
